@@ -1,0 +1,13 @@
+.storage_container * {
+    border: 1px solid black;
+}
+.storage_container {
+    height: calc(100vh - 200px);
+}
+
+.storage_header {
+    height: 10%;
+}
+.storage_body {
+    height: 90%;
+}

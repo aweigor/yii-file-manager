@@ -10,11 +10,49 @@ $config = [
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
+        '@views' => '@app/views'
+    ],
+    'modules' => [
+        'admin' => [
+            'class' => 'app\modules\admin\Module',
+        ],
     ],
     'components' => [
+        'assetManager' => [
+            'bundles' => [
+                'yii\bootstrap\BootstrapAsset' => [
+                    'css' => [],
+                    'js' => []
+                ],
+                'yii\bootstrap\BootstrapPluginAsset' => [
+                    'css' => [],
+                    'js' => []
+                ],
+                'yii\bootstrap\BootstrapThemeAsset' => [
+                    'css' => [],
+                    'js' => []
+                ],
+                'yii\bootstrap\PopperAsset' => [
+                    'css' => [],
+                    'js' => []
+                ],
+                'yii\bootstrap4\BootstrapAsset' => [
+                    'sourcePath' => '@npm/bootstrap/dist',
+                ],
+                'yii\bootstrap4\BootstrapPluginAsset' => [
+                    'sourcePath' => '@npm/bootstrap/dist'
+                ],
+                'yii\bootstrap4\BootstrapThemeAsset' => [
+                    'sourcePath' => '@npm/bootstrap/dist'
+                ],
+                'yii\bootstrap4\PopperAsset' => [
+                    'sourcePath' => '@npm/popper.js/dist/umd'
+                ],
+            ],
+        ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
-            'cookieValidationKey' => 'A3YHWES0T_dITr_bCdoRJ73kZD5N6Ehm',
+            'cookieValidationKey' => 'YN5lN9rYYm3Csn1DNCdhcNJmdeQ7E-Ql',
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
@@ -43,14 +81,13 @@ $config = [
             ],
         ],
         'db' => $db,
-        /*
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                '<controller:(site|auth|catchbin)>/<id:\d+>' => '<controller>/view'
             ],
         ],
-        */
     ],
     'params' => $params,
 ];

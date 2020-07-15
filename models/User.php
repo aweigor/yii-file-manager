@@ -2,103 +2,139 @@
 
 namespace app\models;
 
-class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
+use Yii;
+use yii\web\IdentityInterface;
+use yii\behaviors\TimestampBehavior;
+use yii\db\Expression;
+use \yii\db\ActiveRecord;
+
+/**
+ * This is the model class for table "user".
+ *
+ * @property int $user_id
+ * @property string $user_name
+ * @property string|null $user_email
+ * @property string $user_pwd
+ * @property int|null $user_isAdmin
+ * @property string|null $user_datecreate
+ * @property string|null $user_datelastlogin
+ *
+ * @property File[] $files
+ * @property Folder[] $folders
+ * @property FolderUser[] $folderUsers
+ */
+class User extends \yii\db\ActiveRecord implements IdentityInterface
 {
-    public $id;
-    public $username;
-    public $password;
-    public $authKey;
-    public $accessToken;
-
-    private static $users = [
-        '100' => [
-            'id' => '100',
-            'username' => 'admin',
-            'password' => 'admin',
-            'authKey' => 'test100key',
-            'accessToken' => '100-token',
-        ],
-        '101' => [
-            'id' => '101',
-            'username' => 'demo',
-            'password' => 'demo',
-            'authKey' => 'test101key',
-            'accessToken' => '101-token',
-        ],
-    ];
-
-
     /**
      * {@inheritdoc}
      */
-    public static function findIdentity($id)
+    public static function tableName()
     {
-        return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
+        return 'user';
     }
 
     /**
      * {@inheritdoc}
      */
-    public static function findIdentityByAccessToken($token, $type = null)
+    public function behaviors()
     {
-        foreach (self::$users as $user) {
-            if ($user['accessToken'] === $token) {
-                return new static($user);
-            }
-        }
-
-        return null;
+        return [
+            'timestamp' => [
+                'class' => 'yii\behaviors\TimestampBehavior',
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['user_datecreate']
+                ],
+            ],
+        ];
     }
 
     /**
-     * Finds user by username
+     * {@inheritdoc}
+     */
+    public function rules()
+    {
+        return [
+            [['user_name', 'user_pwd'], 'required'],
+            [['user_isAdmin'], 'integer'],
+            [['user_datecreate', 'user_datelastlogin'], 'safe'],
+            [['user_name', 'user_email', 'user_pwd'], 'string', 'max' => 255],
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
+        return [
+            'user_id' => 'User ID',
+            'user_name' => 'User Name',
+            'user_email' => 'User Email',
+            'user_pwd' => 'User Pwd',
+            'user_isAdmin' => 'User Is Admin',
+            'user_datecreate' => 'User Datecreate',
+            'user_datelastlogin' => 'User Datelastlogin',
+        ];
+    }
+
+    public static function findIdentity($id) {
+        return static::find()->where(['user_id' => $id])->one();
+    }
+
+    public static function findIdentityByAccessToken($token, $type = null) {
+        # TODO: implement findIdentityByAccessToken
+    }
+
+    public function getId() {
+        return $this->user_id;
+    }
+
+    public function getAuthKey() {
+        # TODO: implement getAuthKey
+    }
+
+    public function validateAuthKey($authKey) {
+        # TODO: implement validateAuthKey
+    }
+
+
+    /**
+     * Gets query for [[Files]].
      *
-     * @param string $username
-     * @return static|null
+     * @return \yii\db\ActiveQuery
      */
+    public function getFiles()
+    {
+        return $this->hasMany(File::className(), ['file_user_id' => 'user_id']);
+    }
+
+    /**
+     * Gets query for [[Folders]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFolders()
+    {
+        return $this->hasMany(Folder::className(), ['fold_user_id' => 'user_id']);
+    }
+
+    /**
+     * Gets query for [[FolderUsers]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFolderUsers()
+    {
+        return $this->hasMany(FolderUser::className(), ['foldus_user_id' => 'user_id']);
+    }
+
     public static function findByUsername($username)
     {
-        foreach (self::$users as $user) {
-            if (strcasecmp($user['username'], $username) === 0) {
-                return new static($user);
-            }
-        }
-
-        return null;
+        return static::find()->where(['user_name' => $username])->one();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAuthKey()
-    {
-        return $this->authKey;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function validateAuthKey($authKey)
-    {
-        return $this->authKey === $authKey;
-    }
-
-    /**
-     * Validates password
-     *
-     * @param string $password password to validate
-     * @return bool if password provided is valid for current user
-     */
     public function validatePassword($password)
     {
-        return $this->password === $password;
+        return $this->user_pwd === $password;
     }
 }

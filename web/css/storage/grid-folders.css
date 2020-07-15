@@ -1,0 +1,11 @@
+.folders_container {
+    width: 100%;
+    height: 100%;
+}
+.folders_bu-add {
+    background: #eee;
+}
+.folders_item {
+    width: 100px;
+    height: 100px;
+}
