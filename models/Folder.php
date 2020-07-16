@@ -33,7 +33,6 @@ class Folder extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['fold_id'], 'required'],
             [['fold_id', 'fold_user_id'], 'integer'],
             [['fold_desc'], 'string'],
             [['fold_name', 'fold_image'], 'string', 'max' => 255],
@@ -48,11 +47,11 @@ class Folder extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'fold_id' => 'Fold ID',
+            'fold_id' => 'ID',
             'fold_user_id' => 'Fold User ID',
-            'fold_name' => 'Fold Name',
-            'fold_image' => 'Fold Image',
-            'fold_desc' => 'Fold Desc',
+            'fold_name' => 'Имя',
+            'fold_image' => 'Картинка',
+            'fold_desc' => 'Описание',
         ];
     }
 

@@ -14,7 +14,9 @@
 
 <?php echo $this->render("_gridFolders",
     [
-        "owner" => $identity->user_name,
+        "owner_id" => $identity->user_id,
         "identity" => $identity
     ])
 ?>
+
+
