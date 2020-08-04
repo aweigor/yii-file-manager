@@ -21,10 +21,10 @@ $form = ActiveForm::begin([
 ])
 ?>
 <div id="ajax-form-body">
-    <?= $form->field($model, 'fold_user_id')->hiddenInput()->label(false); ?>
-    <?= $form->field($model, 'fold_name') ?>
-    <?= $form->field($model, 'fold_desc') ?>
-    <?= $form->field($model, 'fold_image') ?>
+    <?= $form->field($folder, 'fold_user_id')->hiddenInput()->label(false); ?>
+    <?= $form->field($folder, 'fold_name') ?>
+    <?= $form->field($folder, 'fold_desc') ?>
+    <?= $form->field($folder, 'users')->checkboxList($usersList)?>
 
     <div class="form-group">
         <div class="col-lg-offset-1 col-lg-11">

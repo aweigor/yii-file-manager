@@ -11,6 +11,7 @@ use Yii;
 use yii\web\Controller;
 use yii\web\BadRequestHttpException;
 use app\models\Folder;
+use app\models\User;
 
 class AjaxController extends Controller
 {
@@ -29,13 +30,23 @@ class AjaxController extends Controller
         if(Yii::$app->user->isGuest) {
             return $this->redirect(["auth/login"]);
         } else {
-            $editModel = new Folder();
-            $editModel->fold_user_id = Yii::$app->user->id;
+            $folderModel = new Folder();
+            $folderModel->fold_user_id = Yii::$app->user->id;
+            $usersList = array_map(function($user) {
+                return $user->user_name;
+            },User::find()->all());
         }
 
         try {
             if(isset($_POST["Folder"]) && !empty($_POST["Folder"])) {
-                if ($editModel->load($_POST["Folder"]) && $editModel->save()) {
+                $folderModel->fold_id = ;
+                $folderModel->fold_desc = ;
+                $folderModel->fold_name = ;
+                $folderModel->fold_user_id = ;
+                $folderModel->users = ;
+                $folderModel->fold_id = ;
+
+                if ($folderModel->load($_POST["Folder"]) && $folderModel->save()) {
                     Yii::$app->session->setFlash(
                         'success',
                         "Папка добавлена"
@@ -60,7 +71,8 @@ class AjaxController extends Controller
             "head" => "Новая папка",
             "body" => $this->renderAjax("_formAddFolder",
                 [
-                    "model" => $editModel,
+                    "folder" => $folderModel,
+                    "usersList" => $usersList
                 ]
             ),
         ] + self::HTML_RESPONSE_ARRAY;

@@ -19,6 +19,7 @@ use Yii;
  */
 class Folder extends \yii\db\ActiveRecord
 {
+    public $users;
     /**
      * {@inheritdoc}
      */
@@ -52,6 +53,7 @@ class Folder extends \yii\db\ActiveRecord
             'fold_name' => 'Имя',
             'fold_image' => 'Картинка',
             'fold_desc' => 'Описание',
+            'users' => 'Могут просматривать'
         ];
     }
 
@@ -63,6 +65,12 @@ class Folder extends \yii\db\ActiveRecord
     public function getFiles()
     {
         return $this->hasMany(File::className(), ['file_fold_id' => 'fold_id']);
+    }
+
+    public function getUsers()
+    {
+        return $this->hasMany(User::className(), ['user_id' => 'foldus_user_id'])
+                    ->viaTable('folder_user', ['foldus_folder_id' => 'fold_id']);
     }
 
     /**

@@ -24,8 +24,8 @@ class Form {
         };
     }
 
-    BindSubmitEvent(formBody, action ) {
-        const that = this
+    BindSubmitEvent() {
+        const that = this;
         let submitButton = document.getElementById("ajax-form-submit");
         let form = document.getElementById("new-folder-form");
 
@@ -33,8 +33,6 @@ class Form {
             event.preventDefault();
 
             let data = $(form).serializeArray();
-
-            console.log(data);
 
             jQuery
                 .post( "/ajax/new-folder", JSON.stringify(data))
@@ -71,28 +69,25 @@ class Form {
 
     ParseDOM = function(response) {
 
-        console.log(response)
-
         this.responseHTML = response.html;
 
         this.formDOM = new DOMParser().parseFromString(response.html.body, "text/html");
         this.formElements.submitButton = this.formDOM.getElementById("ajax-form-submit") || null;
         this.formElements.form = this.formDOM.getElementById("ajax-form-body") || null;
 
-        console.log(this.formElements)
-
         return new Promise( (resolve,reject) => {
             if(this.formElements.submitButton && this.formElements.form) {
                 resolve("done")
             }
         } );
-    }
+    };
 
     NewFolderForm = function() {
         const that = this;
         this.GetForm("new-folder")
             .then( (response) =>
             {
+                console.log(response);
                 that.ParseDOM(response)
                 .then( (result) =>
                 {
