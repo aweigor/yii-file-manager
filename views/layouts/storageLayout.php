@@ -5,10 +5,13 @@
  * Date: 7/15/20
  * Time: 8:14 AM
  */
+use Yii;
 use app\models\User;
 
 // Пользователи, которые дали доступ к папке
-$friends = User::find();
+$userId = Yii::$app->user->identity->id;
+$userModel = User::findOne($userId);
+$friends = $userModel->getFriends();
 
 $this->registerCssFile("@web/css/storage/layout.css",
     [
@@ -30,7 +33,9 @@ $this->registerCssFile("@web/css/storage/layout.css",
         <div class="storage_body row">
 
             <div class="storage_sided_bar col-3">
-                content
+                <?php
+                    echo var_dump($friends);
+                ?>
             </div>
 
             <div class="storage_content_view col-9">

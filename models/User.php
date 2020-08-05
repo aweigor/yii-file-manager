@@ -7,6 +7,7 @@ use yii\web\IdentityInterface;
 use yii\behaviors\TimestampBehavior;
 use yii\db\Expression;
 use \yii\db\ActiveRecord;
+use \yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "user".
@@ -118,6 +119,12 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         return $this->hasMany(Folder::className(), ['fold_user_id' => 'user_id']);
     }
 
+    public function getSharedFolders()
+    {
+        return $this->hasMany(Folder::className(), ['fold_id' => 'foldus_folder_id'])
+                    ->viaTable('folder_user', ['foldus_user_id' => 'user_id']);
+    }
+
     /**
      * Gets query for [[FolderUsers]].
      *
@@ -136,5 +143,13 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     public function validatePassword($password)
     {
         return $this->user_pwd === $password;
+    }
+
+    public function getFriends()
+    {
+
+        $sharedFolders = $this->getSharedFolders()->select("fold_user_id")->asArray()->all();
+        $sharedOwners = ArrayHelper::getColumn($sharedFolders, 'fold_user_id');
+        return array_unique($sharedOwners);
     }
 }
