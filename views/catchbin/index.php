@@ -1,4 +1,6 @@
 <?php
+/* @vars $ownFolders - Active Record Collection - user folders */
+
     $this->title = "Мой каталог";
 
     $this->registerCssFile("@web/css/storage/index.css",
@@ -15,8 +17,7 @@
 <?php echo $this->render("_gridFolders",
     [
         "owner_id" => $identity->user_id,
-        "identity" => $identity
+        "identity" => $identity,
+        "folders" => $ownFolders
     ])
 ?>
-
-

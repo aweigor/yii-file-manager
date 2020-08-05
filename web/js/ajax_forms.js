@@ -32,12 +32,13 @@ class Form {
         submitButton.addEventListener("click", function(event) {
             event.preventDefault();
 
-            let data = $(form).serializeArray();
+            let formData = $(form).serializeArray();
 
             jQuery
-                .post( "/ajax/new-folder", JSON.stringify(data))
+                .post( "/ajax/new-folder", {formData: JSON.stringify(formData)})
                 .done( function( data )
                 {
+                    console.log(data);
                     let response = JSON.parse(data) || {};
                     if  (response.status !== "success") {
                         that.ParseDOM(response)

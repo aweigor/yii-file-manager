@@ -11,6 +11,7 @@ namespace app\controllers;
 use Yii;
 use yii\web\Controller;
 use yii\helpers\Url;
+use app\models\Folder;
 
 class CatchbinController extends Controller
 {
@@ -18,10 +19,31 @@ class CatchbinController extends Controller
     public function actionIndex()
     {
         $this->layout = "storageLayout";
+
         if (Yii::$app->user->isGuest) {
             return $this->redirect(["auth/login"]);
         }
-        return $this->render('index');
+
+        $ownFolders = Folder::find()
+            ->where(['fold_user_id' => Yii::$app->user->identity->user_id])
+            ->all();
+
+        return $this->render('index', [
+            "ownFolders" => $ownFolders
+        ]);
+    }
+
+    public function actionFormtest()
+    {
+        $selectedUsers = [1]; // $folder->getSelectedUsers
+        $users = [
+            1 => 'User1',
+            2 => 'User2'
+        ];
+        return $this->render('formtest', [
+            'users' => $users,
+            'selectedUsers' => $selectedUsers
+        ]);
     }
 
 }

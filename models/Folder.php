@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "folder".
@@ -71,6 +72,21 @@ class Folder extends \yii\db\ActiveRecord
     {
         return $this->hasMany(User::className(), ['user_id' => 'foldus_user_id'])
                     ->viaTable('folder_user', ['foldus_folder_id' => 'fold_id']);
+    }
+
+    public function getSelectedUsers() {
+        $selectedIds = $this->getUsers()->select("user_id")->asArray()->all();
+        return ArrayHelper::getColumn($selectedIds, 'user_id');
+    }
+
+    public function bindUsers($users) {
+        if(is_array($users)) {
+            foreach ($users as $user_id)
+            {
+                $user = User::findOne($user_id);
+                $this->link('users', $user);
+            }
+        }
     }
 
     /**

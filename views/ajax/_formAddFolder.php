@@ -24,7 +24,7 @@ $form = ActiveForm::begin([
     <?= $form->field($folder, 'fold_user_id')->hiddenInput()->label(false); ?>
     <?= $form->field($folder, 'fold_name') ?>
     <?= $form->field($folder, 'fold_desc') ?>
-    <?= $form->field($folder, 'users')->checkboxList($usersList)?>
+    <?= $form->field($folder, 'users')->dropDownList($users, [ 'multiple' => true]) ?>
 
     <div class="form-group">
         <div class="col-lg-offset-1 col-lg-11">
