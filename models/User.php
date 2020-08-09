@@ -147,9 +147,17 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
 
     public function getFriends()
     {
+        $sharedOwners = $sharedFolders = [];
 
-        $sharedFolders = $this->getSharedFolders()->select("fold_user_id")->asArray()->all();
+        $sharedFolders = $this->getSharedFolders()
+            ->select("fold_user_id")
+            ->asArray()
+            ->all();
+
         $sharedOwners = ArrayHelper::getColumn($sharedFolders, 'fold_user_id');
-        return array_unique($sharedOwners);
+
+        return array_map(function($userId) {
+            return self::findOne($userId);
+        },array_unique($sharedOwners));
     }
 }

@@ -23,8 +23,12 @@ class AjaxController extends Controller
         "bottom" => null
     ];
 
-    public function actionNewFolder()
+    public function actionFolder($folder_id = NULL)
     {
+        $html = $users = $formData = [];
+        $headContent = $bodyContent = $footerContent = "";
+        $folderModel = $formType = NULL;
+
         if(!Yii::$app->request->isAjax) {
             throw new BadRequestHttpException();
         }
@@ -32,9 +36,17 @@ class AjaxController extends Controller
         if(Yii::$app->user->isGuest) {
             return $this->redirect(["auth/login"]);
         } else {
-            $folderModel = new Folder();
-            $folderModel->fold_user_id = Yii::$app->user->id;
-            $folderModel->users = $selectedUsers = $folderModel->getSelectedUsers();
+            if($folder_id || isset($_POST["folder_id"])) {
+                $one = $folder_id !== NULL ? $folder_id : $_POST["folder_id"];
+                $folderModel = Folder::findOne($one);
+                $folderModel->users = $selectedUsers = $folderModel->getSelectedUsers();
+                $formType = "EditFolder";
+            } else {
+                $folderModel = new Folder();
+                $folderModel->fold_user_id = Yii::$app->user->id;
+                $folderModel->users = $selectedUsers = $folderModel->getSelectedUsers();
+                $formType = "AddFolder";
+            }
             $users = ArrayHelper::map(User::find()->all(), 'user_id', 'user_name');
         }
 
@@ -69,15 +81,18 @@ class AjaxController extends Controller
             };
         }
 
+        $headContent = $folderModel->fold_name !== NULL ? "Редактирование ".$folderModel->fold_name: "Новая папка";
+        $bodyContent = $this->renderAjax("_form".$formType,
+            [
+                "folder" => $folderModel,
+                "users" => $users,
+                "selectedUsers" => $selectedUsers
+            ]
+        );
+
         $html = [
-            "head" => "Новая папка",
-            "body" => $this->renderAjax("_formAddFolder",
-                [
-                    "folder" => $folderModel,
-                    "users" => $users,
-                    "selectedUsers" => $selectedUsers
-                ]
-            ),
+            "head" => $headContent,
+            "body" => $bodyContent,
         ] + self::HTML_RESPONSE_TEMPLATE;
 
         return json_encode([

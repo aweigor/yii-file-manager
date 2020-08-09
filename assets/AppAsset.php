@@ -24,6 +24,8 @@ class AppAsset extends AssetBundle
     ];
     public $js = [
         'js/ajax_forms.js',
+        'js/events.js',
+        'https://kit.fontawesome.com/700bd56e8a.js'
     ];
     public $depends = [
         'yii\web\YiiAsset',

@@ -20,6 +20,10 @@
                 <div id="ajax-content-body"></div>
             </div>
 
+            <div class="modal-footer">
+                <div id="ajax-content-bottom"></div>
+            </div>
+
         </div><!-- modal-content -->
     </div><!-- modal-dialog -->
 </div><!-- modal -->

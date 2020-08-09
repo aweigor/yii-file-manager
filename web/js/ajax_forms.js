@@ -24,18 +24,19 @@ class Form {
         };
     }
 
-    BindSubmitEvent() {
+    BindSubmitEvent(formId, actionName, options = {}) {
         const that = this;
-        let submitButton = document.getElementById("ajax-form-submit");
-        let form = document.getElementById("new-folder-form");
+        let submitButton, form, formData, requestBody;
+        submitButton = document.getElementById("ajax-form-submit");
+        form = document.getElementById(formId);
 
         submitButton.addEventListener("click", function(event) {
             event.preventDefault();
 
-            let formData = $(form).serializeArray();
-
+            options.formData = JSON.stringify($(form).serializeArray());
+            console.log(options);
             jQuery
-                .post( "/ajax/new-folder", {formData: JSON.stringify(formData)})
+                .post( "/ajax/"+actionName, options)
                 .done( function( data )
                 {
                     console.log(data);
@@ -47,7 +48,7 @@ class Form {
                                 that.InsertAsHtml()
                                     .then( (result) =>
                                     {
-                                        that.BindSubmitEvent()
+                                        that.BindSubmitEvent(formId, actionName)
                                     })
                             })
                     }
@@ -60,6 +61,8 @@ class Form {
 
         return new Promise( (resolve) => {
             this.pageElements.forEach(function(item, key, self) {
+                console.log(item)
+
                 item.element.innerHTML = html[item.position]
                 if(key === self.length - 1) {
                     resolve("done")
@@ -85,7 +88,7 @@ class Form {
 
     NewFolderForm = function() {
         const that = this;
-        this.GetForm("new-folder")
+        this.GetForm("folder")
             .then( (response) =>
             {
                 console.log(response);
@@ -95,42 +98,68 @@ class Form {
                     that.InsertAsHtml()
                     .then( (result) =>
                     {
-                        that.BindSubmitEvent()
+                        that.BindSubmitEvent("new-folder-form", "folder")
                     })
                 })
             });
         return this;
     };
 
-    GetForm = function(formType) {
-        switch(formType) {
-            case("new-folder"): {
-                return new Promise((resolve) => {
-                    jQuery
-                        .get( "/ajax/new-folder")
-                        .done( function( data )
-                        {
-                            let response = JSON.parse(data) || {};
-                            resolve(response)
-                        })
-                });
-            }
-        }
+    EditFolderForm = function(folder_id) {
+        const that = this;
+        this.GetForm("folder", folder_id)
+            .then( (response) =>
+            {
+                console.log(response);
+                that.ParseDOM(response)
+                    .then( (result) =>
+                    {
+                        that.InsertAsHtml()
+                            .then( (result) =>
+                            {
+                                that.BindSubmitEvent("edit-folder-form", "folder", {folder_id:folder_id})
+                            })
+                    })
+            });
+        return this;
+    };
+
+    GetForm = function(formType, folder_id = null) {
+        return new Promise((resolve) => {
+            jQuery
+                .get( "/ajax/"+formType, {folder_id: folder_id})
+                .done( function( data )
+                {
+                    let response = JSON.parse(data) || {};
+                    resolve(response)
+                })
+        });
     }
 }
 
 jQuery(document).ready ( function() {
     const pageElements = {
-        head: document.getElementById("ajax-content-head") || {},
-        body: document.getElementById("ajax-content-body") || {},
-        bottom: document.getElementById("ajax-content-bottom") || {}
+        head: document.getElementById("ajax-content-head") || null,
+        body: document.getElementById("ajax-content-body") || null,
+        bottom: document.getElementById("ajax-content-bottom") || null
     };
 
-    const btAddFolder = document.getElementById("bt-add-folder") || {};
+    const btAddFolder = document.getElementById("bt-add-folder") || null;
+    const btEditFolderCollection = document.getElementsByClassName("bt-edit-folder") || null;
 
     if(btAddFolder) {
         btAddFolder.addEventListener("click", function() {
             return new Form ( pageElements ).NewFolderForm()
         })
     }
+
+    if(btEditFolderCollection) {
+        for(let btEditFolderElement of btEditFolderCollection) {
+            const folder_id = btEditFolderElement.id.split("_")[1];
+            btEditFolderElement.addEventListener("click", function() {
+                return new Form ( pageElements ).EditFolderForm(folder_id)
+            })
+        }
+    }
 });
+
