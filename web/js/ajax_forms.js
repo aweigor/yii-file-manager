@@ -124,6 +124,25 @@ class Form {
         return this;
     };
 
+    UploadFileForm (folder_id) {
+        const that = this;
+        this.GetForm("file-upload", folder_id)
+            .then( (response) =>
+            {
+                console.log(response);
+                that.ParseDOM(response)
+                    .then( (result) =>
+                    {
+                        that.InsertAsHtml()
+                            .then( (result) =>
+                            {
+                                that.BindSubmitEvent("edit-folder-form", "folder", {folder_id:folder_id})
+                            })
+                    })
+            });
+        return this;
+    }
+
     GetForm = function(formType, folder_id = null) {
         return new Promise((resolve) => {
             jQuery
@@ -146,6 +165,15 @@ jQuery(document).ready ( function() {
 
     const btAddFolder = document.getElementById("bt-add-folder") || null;
     const btEditFolderCollection = document.getElementsByClassName("bt-edit-folder") || null;
+    const btUploadFile = document.getElementById("bt-upload-file") || null;
+
+    if(false) {
+        btUploadFile.addEventListener("click", function() {
+            console.log("event_click")
+            const folder_id = btUploadFile.getAttribute("folder");
+            return new Form ( pageElements ).UploadFileForm(folder_id)
+        })
+    }
 
     if(btAddFolder) {
         btAddFolder.addEventListener("click", function() {

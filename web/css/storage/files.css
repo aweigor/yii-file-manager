@@ -1,0 +1,15 @@
+.file_input.dd_button {
+    background:green;
+    border: 3px dashed black;
+    border-radius: 20px;
+    width: 100%;
+    height:60px;
+    padding: 6px;
+}
+.file_input.dd_button > i.fas {
+    font-size: 40px;
+}
+.file_input.box {
+    padding: 0;
+    width:100%;
+}

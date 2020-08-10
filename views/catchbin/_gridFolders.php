@@ -54,13 +54,12 @@ $this->registerCssFile("@web/css/storage/grid-folders.css",
                             <i  class="fas fa-pen-square"></i>
                         </a>
                     </div>
-                    <div >
+                    <div>
                         <a href="<?= $removeFolderLink?>">
                             <i style="color:red" class="fas fa-minus-square"></i>
                         </a>
                     </div>
                 </div>
-
             <?php endif;?>
         </div>
     <?php endforeach; ?>

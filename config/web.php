@@ -16,6 +16,14 @@ $config = [
         'admin' => [
             'class' => 'app\modules\admin\Module',
         ],
+        'gridview' =>  [
+            'class' => '\kartik\grid\Module'
+            // enter optional module parameters below - only if you need to
+            // use your own export download action or custom translation
+            // message source
+            // 'downloadAction' => 'gridview/export/download',
+            // 'i18n' => []
+        ]
     ],
     'components' => [
         'assetManager' => [
@@ -24,29 +32,8 @@ $config = [
                     'css' => [],
                     'js' => []
                 ],
-                'yii\bootstrap\BootstrapPluginAsset' => [
-                    'css' => [],
-                    'js' => []
-                ],
-                'yii\bootstrap\BootstrapThemeAsset' => [
-                    'css' => [],
-                    'js' => []
-                ],
-                'yii\bootstrap\PopperAsset' => [
-                    'css' => [],
-                    'js' => []
-                ],
                 'yii\bootstrap4\BootstrapAsset' => [
                     'sourcePath' => '@npm/bootstrap/dist',
-                ],
-                'yii\bootstrap4\BootstrapPluginAsset' => [
-                    'sourcePath' => '@npm/bootstrap/dist'
-                ],
-                'yii\bootstrap4\BootstrapThemeAsset' => [
-                    'sourcePath' => '@npm/bootstrap/dist'
-                ],
-                'yii\bootstrap4\PopperAsset' => [
-                    'sourcePath' => '@npm/popper.js/dist/umd'
                 ],
             ],
         ],

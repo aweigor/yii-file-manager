@@ -1,7 +1,6 @@
 function editGroupMouseOver (event) {
 
-    console.log(event.relatedTarget.className);
-    if(event.relatedTarget.className === "edit_bt_group") return;
+    if(event.relatedTarget.className === "edit_bt_group" || event.relatedTarget.className.includes('fas')) return;
 
     let edtGroupTarget, editGroupElements;
     const parent = event.target.parentElement;
@@ -17,7 +16,6 @@ function editGroupMouseOver (event) {
 
 function editGroupMouseOut (event) {
 
-    console.log(event.relatedTarget.className);
     if(event.relatedTarget.className === "edit_bt_group" || event.relatedTarget.className.includes('fas')) return;
 
     let edtGroupTarget, editGroupElements;

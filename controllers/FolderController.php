@@ -9,6 +9,8 @@
 namespace app\controllers;
 
 use app\models\Folder;
+use app\models\FileUpload;
+use app\models\FileSearch;
 use yii\web\Controller;
 use yii\web\BadRequestHttpException;
 use Yii;
@@ -25,6 +27,18 @@ class FolderController extends Controller
 
     public function actionFiles($folder_id) {
         $this->layout = "storageLayout";
-        return $this->render("files");
+
+        $folder = Folder::findOne($folder_id);
+        $identity = Yii::$app->user->identity;
+        $uploadModel = new FileUpload();
+        $fileSearch = new FileSearch();
+        $filesProvider = $fileSearch->search([]);
+
+        return $this->render("files", [
+            'folder' => $folder,
+            'uploadModel' => $uploadModel,
+            'identity' => $identity,
+            'filesProvider' => $filesProvider
+        ]);
     }
 }

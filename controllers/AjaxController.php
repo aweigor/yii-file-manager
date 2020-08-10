@@ -13,7 +13,10 @@ use yii\web\Controller;
 use yii\web\BadRequestHttpException;
 use app\models\Folder;
 use app\models\User;
+use app\models\FileUpload;
+use app\models\File;
 use app\components\helpers\Ajax;
+use yii\web\UploadedFile;
 
 class AjaxController extends Controller
 {
@@ -22,6 +25,8 @@ class AjaxController extends Controller
         "body" => null,
         "bottom" => null
     ];
+
+    public $uploadErrors;
 
     public function actionFolder($folder_id = NULL)
     {
@@ -100,4 +105,44 @@ class AjaxController extends Controller
             "html" => $html
         ]);
     }
+
+    public function actionFileUpload($folder_id) {
+        $folder = Folder::findOne($folder_id); // todo: $folder->fold_user_id - folder owner check
+        $uploadModel = new FileUpload();
+
+        if (Yii::$app->request->isPost) {
+            $uploadModel->fileInstances = UploadedFile::getInstances($uploadModel, 'fileInstances');
+
+            if($uploadModel->validate()) {
+                foreach($uploadModel->fileInstances as $file) {
+                    $uploadDir = $uploadModel->upload($file);
+                    $fileModel = new File();
+                    $fileModel->file_dir = $uploadDir;
+                    $fileModel->file_name = $file->baseName;
+                    $fileModel->file_ext = $file->extension;
+                    $fileModel->file_user_id = Yii::$app->user->id;
+                    $fileModel->file_fold_id = $folder_id;
+                    $fileModel->file_isDeleted = false;
+                    $fileModel->file_isPersonal = false;
+
+                    if ($fileModel->validate()) {
+                        $fileModel->save();
+                    } else {
+                        $this->uploadErrors[$file->baseName] = $fileModel->getErrors();
+                    }
+                }
+            } else {
+                $errors = json_encode($uploadModel->getErrors());
+                return $errors;
+            }
+            $errors = $this->uploadErrors;
+            if(!empty($errors)) {
+                return json_encode($errors);
+            } else {
+                return $this->redirect(['folder/files', 'folder_id' => $folder_id]);
+            }
+        }
+        return null;
+    }
+
 }

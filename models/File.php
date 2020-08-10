@@ -38,14 +38,14 @@ class File extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['file_id'], 'required'],
-            [['file_id', 'file_user_id', 'file_fold_id', 'file_isDeleted', 'file_isPersonal'], 'integer'],
+            [['file_id', 'file_user_id', 'file_fold_id'], 'integer'],
+            [['file_isDeleted', 'file_isPersonal'],'boolean'],
             [['file_comment'], 'string'],
             [['file_dateloaded'], 'safe'],
             [['file_dir', 'file_name', 'file_ext', 'file_color'], 'string', 'max' => 255],
             [['file_id'], 'unique'],
             [['file_fold_id'], 'exist', 'skipOnError' => true, 'targetClass' => Folder::className(), 'targetAttribute' => ['file_fold_id' => 'fold_id']],
-            [['file_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['file_user_id' => 'user_id']],
+            [['file_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['file_user_id' => 'user_id']]
         ];
     }
 
