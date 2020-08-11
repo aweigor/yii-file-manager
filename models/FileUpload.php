@@ -34,12 +34,14 @@ class FileUpload extends File
      *
      * @return boolean
      */
-    public function upload($file)
+    public function upload($file, $folder, $time)
     {
-        $uploadDir = 'uploads/storage' . $file->baseName . '.' . $file->extension;
+        $uploadDir = 'uploads/storage/'.$folder->fold_id;
+        if(!is_dir($uploadDir)) mkdir($uploadDir);
+        $fileDir = $uploadDir . '/' . md5($time) . '.' . $file->extension;
 
-        if($file->saveAs($uploadDir)) {
-            return $uploadDir;
+        if($file->saveAs($fileDir)) {
+            return $fileDir;
         }
 
         return null;

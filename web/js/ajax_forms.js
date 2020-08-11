@@ -107,7 +107,7 @@ class Form {
 
     EditFolderForm = function(folder_id) {
         const that = this;
-        this.GetForm("folder", folder_id)
+        this.GetForm("folder", {folder_id: folder_id})
             .then( (response) =>
             {
                 console.log(response);
@@ -124,9 +124,9 @@ class Form {
         return this;
     };
 
-    UploadFileForm (folder_id) {
+    EditFileForm (file_id) {
         const that = this;
-        this.GetForm("file-upload", folder_id)
+        this.GetForm("file-edit", {file_id:file_id})
             .then( (response) =>
             {
                 console.log(response);
@@ -136,17 +136,17 @@ class Form {
                         that.InsertAsHtml()
                             .then( (result) =>
                             {
-                                that.BindSubmitEvent("edit-folder-form", "folder", {folder_id:folder_id})
+                                that.BindSubmitEvent("edit-file-form", "file-edit", {file_id:file_id})
                             })
                     })
             });
         return this;
     }
 
-    GetForm = function(formType, folder_id = null) {
+    GetForm = function(formType, options = {}) {
         return new Promise((resolve) => {
             jQuery
-                .get( "/ajax/"+formType, {folder_id: folder_id})
+                .get( "/ajax/"+formType, options)
                 .done( function( data )
                 {
                     let response = JSON.parse(data) || {};
@@ -165,14 +165,16 @@ jQuery(document).ready ( function() {
 
     const btAddFolder = document.getElementById("bt-add-folder") || null;
     const btEditFolderCollection = document.getElementsByClassName("bt-edit-folder") || null;
-    const btUploadFile = document.getElementById("bt-upload-file") || null;
+    const btEditFileCollection = document.getElementsByClassName("bt-edit-file") || null;
 
-    if(false) {
-        btUploadFile.addEventListener("click", function() {
-            console.log("event_click")
-            const folder_id = btUploadFile.getAttribute("folder");
-            return new Form ( pageElements ).UploadFileForm(folder_id)
-        })
+    if(btEditFileCollection) {
+        for(let btEditFileElement of btEditFileCollection) {
+            const file_id = btEditFileElement.id.split("_")[1];
+            btEditFileElement.addEventListener("click", function() {
+                console.log(file_id);
+                return new Form ( pageElements ).EditFileForm(file_id)
+            })
+        }
     }
 
     if(btAddFolder) {
@@ -190,4 +192,3 @@ jQuery(document).ready ( function() {
         }
     }
 });
-

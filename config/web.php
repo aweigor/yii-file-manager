@@ -32,7 +32,7 @@ $config = [
                     'css' => [],
                     'js' => []
                 ],
-                'yii\bootstrap4\BootstrapAsset' => [
+                'yii\bootstrap4\BootstrapPluginAsset' => [
                     'sourcePath' => '@npm/bootstrap/dist',
                 ],
             ],

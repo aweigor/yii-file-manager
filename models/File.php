@@ -88,4 +88,9 @@ class File extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::className(), ['user_id' => 'file_user_id']);
     }
+
+    public function remove() {
+        $this->file_isDeleted = true;
+        return $this->save(false);
+    }
 }

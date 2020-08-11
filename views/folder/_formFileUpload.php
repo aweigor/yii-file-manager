@@ -25,11 +25,10 @@ use yii\helpers\Url;
         'pluginOptions' => [
             'initialPreviewAsData'=>true,
             'overwriteInitial'=>false,
-            'maxFileSize'=>2800,
+            'maxFileSize'=> 2800,
             'browseClass' => 'btn btn-success',
             'uploadClass' => 'btn btn-info',
             'removeClass' => 'btn btn-danger',
-            'removeIcon' => '<i class="fas fa-trash"></i>',
             'previewFileType' => 'any',
             'uploadUrl' => Url::to(['ajax/file-upload', 'folder_id' => $folder->fold_id]),]
     ]

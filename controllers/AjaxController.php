@@ -57,7 +57,8 @@ class AjaxController extends Controller
 
         if(isset($_POST["formData"]) && !empty($_POST["formData"])) {
             try {
-                $formData = Ajax::ParseFormData(json_decode($_POST["formData"], true), "Folder");
+                $formData = json_decode($_POST["formData"], true);
+                $formData = Ajax::ParseFormData($formData, "Folder");
 
                 $folderModel->fold_user_id = $formData["fold_user_id"];
                 $folderModel->fold_name = $formData["fold_name"];
@@ -115,13 +116,15 @@ class AjaxController extends Controller
 
             if($uploadModel->validate()) {
                 foreach($uploadModel->fileInstances as $file) {
-                    $uploadDir = $uploadModel->upload($file);
+                    $time = time();
+                    $fileDir = $uploadModel->upload($file, $folder, $time);
                     $fileModel = new File();
-                    $fileModel->file_dir = $uploadDir;
+                    $fileModel->file_dir = $fileDir;
                     $fileModel->file_name = $file->baseName;
                     $fileModel->file_ext = $file->extension;
                     $fileModel->file_user_id = Yii::$app->user->id;
                     $fileModel->file_fold_id = $folder_id;
+                    $fileModel->file_dateloaded = $time;
                     $fileModel->file_isDeleted = false;
                     $fileModel->file_isPersonal = false;
 
@@ -145,4 +148,82 @@ class AjaxController extends Controller
         return null;
     }
 
+    public function actionFileEdit($file_id = null) {
+        $html = $formData = [];
+        $fileModel = $formType = $folder_id = NULL;
+
+        if(!Yii::$app->request->isAjax) {
+            throw new BadRequestHttpException("request must be ajax");
+        }
+
+        if(Yii::$app->user->isGuest) {
+            return $this->redirect(["auth/login"]);
+        } else {
+            if(!$file_id) {
+                if(!empty($_POST["file_id"])) {
+                    $fileModel = File::findOne($_POST["file_id"]);
+                } else {
+                    throw new BadRequestHttpException("no file id");
+                }
+            } else {
+                $fileModel = File::findOne($file_id);
+            }
+            $folder_id = $fileModel->file_fold_id;
+            $formType = "EditFile";
+        }
+
+        if(isset($_POST["formData"]) && !empty($_POST["formData"])) {
+            try {
+                $formData = json_decode($_POST["formData"], true);
+                $formData = Ajax::ParseFormData($formData, "File");
+
+                if(!empty($formData["file_name"])) {
+                    $fileModel->file_name = $formData["file_name"];
+                }
+
+                if(!empty($formData["file_isPersonal"])) {
+                    $fileModel->file_isPersonal = $formData["file_isPersonal"];
+                } else {
+                    $fileModel->file_isPersonal = false;
+                }
+
+                if(!empty($formData["file_comment"])) {
+                    $fileModel->file_comment = $formData["file_comment"];
+                }
+
+                if ($fileModel->save()) {
+                    Yii::$app->session->setFlash(
+                        'success',
+                        "Папка добавлена"
+                    );
+                    return $this->redirect(["folder/files", "folder_id" => $folder_id]);
+                } else {
+                    throw new BadRequestHttpException("error while saving model !");
+                }
+            } catch (BadRequestHttpException $exception) {
+                Yii::$app->session->setFlash(
+                    'error',
+                    $exception
+                );
+                $this->goBack();
+            };
+        }
+
+        $headContent = "<h6>Редактирование".$fileModel->file_name."</h6>";
+        $bodyContent = $this->renderAjax("_form".$formType,
+            [
+                "file" => $fileModel
+            ]
+        );
+
+        $html = [
+                "head" => $headContent,
+                "body" => $bodyContent,
+            ] + self::HTML_RESPONSE_TEMPLATE;
+
+        return json_encode([
+            "msg" => "success",
+            "html" => $html
+        ]);
+    }
 }

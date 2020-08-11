@@ -8,8 +8,17 @@
 
 use yii\grid\ActionColumn;
 use yii\helpers\html;
+use yii\helpers\Url;
 use kartik\grid\GridView;
 
+/*
+ * @var $filesProvider
+ * @var $folder
+ * @var $identity
+ * @var $uploadModel
+ * @var $searchModel
+ *
+ * */
 
 $this->title = "Мой каталог";
 
@@ -19,7 +28,6 @@ $this->registerCssFile("@web/css/storage/files.css",
         'depends'=> ['app\assets\AppAsset']
     ]
 );
-
 $gridColumns = [
     [
         'class' => 'kartik\grid\ExpandRowColumn',
@@ -52,11 +60,27 @@ $gridColumns = [
     [
         'class' => 'kartik\grid\ActionColumn',
         'headerOptions'=>['class'=>'kartik-sheet-style'],
-        'template' => '{bt_activate}',
+        'template' => '{bt_edit_file}{bt_delete_file}{bt_download_file}',
         'buttons' => [
             'bt_edit_file' => function ($url, $model, $key) {
-                $text = "Edit";
-                return Html::a($text , ['index']);
+                return '<div 
+                        type="button " 
+                        id="file_'.$model->file_id.'" 
+                        owner="'.$model->file_user_id.'" 
+                        data-toggle="modal" 
+                        data-target="#editModal" 
+                        class="btn bt-edit-file files_bu-edit"
+                        ><i class="fas fa-pencil-alt"></i></div>';
+            },
+            'bt_delete_file' => function ($url, $model, $key) {
+                return '<div type="button " class="btn"><a href="'.Url::to(['folder/remove-file', 'file_id' => $model->file_id]).'">
+                            <i style="color:red" class="fas fa-minus-square"></i>
+                        </a></div>';
+            },
+            'bt_download_file' => function ($url, $model, $key) {
+                return '<div type="button " class="btn"><a href="'.Url::to(['folder/download-file', 'file_id' => $model->file_id]).'">
+                            <i style="color:red" class="fas fa-minus-square"></i>
+                        </a></div>';
             },
         ]
     ],
@@ -119,7 +143,11 @@ $gridColumns = [
 <div class="grid-table files">
     <?php echo GridView::widget([
         'dataProvider'=> $filesProvider,
-        'columns' => $gridColumns
+        'filterModel' => $searchModel,
+        'columns' => $gridColumns,
+        'containerOptions' => ['style' => 'overflow: auto'], // only set when $responsive = false
+        'headerRowOptions' => ['class' => 'kartik-sheet-style'],
+        'filterRowOptions' => ['class' => 'kartik-sheet-style']
     ]) ?>
 </div>
 

@@ -40,8 +40,7 @@ class FileSearch extends File
      */
     public function search($params)
     {
-        $query = File::find();
-
+        $query = File::find()->where(['file_isDeleted' => 0]);
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
