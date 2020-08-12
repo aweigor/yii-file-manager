@@ -45,5 +45,4 @@ class CatchbinController extends Controller
             'selectedUsers' => $selectedUsers
         ]);
     }
-
 }

@@ -56,16 +56,16 @@ class File extends \yii\db\ActiveRecord
     {
         return [
             'file_id' => 'File ID',
-            'file_dir' => 'File Dir',
-            'file_name' => 'File Name',
-            'file_ext' => 'File Ext',
-            'file_color' => 'File Color',
-            'file_comment' => 'File Comment',
-            'file_dateloaded' => 'File Dateloaded',
+            'file_dir' => 'Директория',
+            'file_name' => 'Имя файла',
+            'file_ext' => 'Тип',
+            'file_color' => 'Цвет',
+            'file_comment' => 'Примечания',
+            'file_dateloaded' => 'Дата загрузки',
             'file_user_id' => 'File User ID',
             'file_fold_id' => 'File Fold ID',
             'file_isDeleted' => 'File Is Deleted',
-            'file_isPersonal' => 'File Is Personal',
+            'file_isPersonal' => 'Личный файл',
         ];
     }
 

@@ -5,6 +5,7 @@ $db = require __DIR__ . '/db.php';
 
 $config = [
     'id' => 'basic',
+    'language' => 'ru-RU',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'aliases' => [
@@ -26,6 +27,18 @@ $config = [
         ]
     ],
     'components' => [
+        'i18n' => [
+            'translations' => [
+                'yii*' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@app/message',
+                    'sourceLanguage' => 'en-US',
+                    'fileMap' => [
+                        'yii' => 'yii.php'
+                    ],
+                ],
+            ],
+        ],
         'assetManager' => [
             'bundles' => [
                 'yii\bootstrap\BootstrapAsset' => [

@@ -33,7 +33,7 @@ class FolderController extends Controller
         $identity = Yii::$app->user->identity;
         $uploadModel = new FileUpload();
         $fileSearch = new FileSearch();
-        $filesProvider = $fileSearch->search([]);
+        $filesProvider = $fileSearch->search($_GET);
 
         return $this->render("files", [
             'folder' => $folder,
@@ -69,7 +69,7 @@ class FolderController extends Controller
         if (file_exists($fileDir)) {
             header('Content-Description: File Transfer');
             header('Content-Type: application/octet-stream');
-            header('Content-Disposition: attachment; filename="'.basename($fileDir).'"');
+            header('Content-Disposition: attachment; filename="'.$file->file_name.'"');
             header('Expires: 0');
             header('Cache-Control: must-revalidate');
             header('Pragma: public');
@@ -77,5 +77,7 @@ class FolderController extends Controller
             readfile($fileDir);
             exit;
         }
+
+        return false;
     }
 }

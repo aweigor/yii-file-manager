@@ -1,6 +1,4 @@
-.storage_container * {
-    border: 1px solid black;
-}
+
 .storage_container {
     height: calc(100vh - 200px);
 }

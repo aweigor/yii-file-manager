@@ -34,12 +34,10 @@ class Form {
             event.preventDefault();
 
             options.formData = JSON.stringify($(form).serializeArray());
-            console.log(options);
             jQuery
                 .post( "/ajax/"+actionName, options)
                 .done( function( data )
                 {
-                    console.log(data);
                     let response = JSON.parse(data) || {};
                     if  (response.status !== "success") {
                         that.ParseDOM(response)
@@ -61,8 +59,6 @@ class Form {
 
         return new Promise( (resolve) => {
             this.pageElements.forEach(function(item, key, self) {
-                console.log(item)
-
                 item.element.innerHTML = html[item.position]
                 if(key === self.length - 1) {
                     resolve("done")
@@ -91,7 +87,6 @@ class Form {
         this.GetForm("folder")
             .then( (response) =>
             {
-                console.log(response);
                 that.ParseDOM(response)
                 .then( (result) =>
                 {
@@ -110,7 +105,6 @@ class Form {
         this.GetForm("folder", {folder_id: folder_id})
             .then( (response) =>
             {
-                console.log(response);
                 that.ParseDOM(response)
                     .then( (result) =>
                     {
@@ -129,7 +123,6 @@ class Form {
         this.GetForm("file-edit", {file_id:file_id})
             .then( (response) =>
             {
-                console.log(response);
                 that.ParseDOM(response)
                     .then( (result) =>
                     {
@@ -171,7 +164,6 @@ jQuery(document).ready ( function() {
         for(let btEditFileElement of btEditFileCollection) {
             const file_id = btEditFileElement.id.split("_")[1];
             btEditFileElement.addEventListener("click", function() {
-                console.log(file_id);
                 return new Form ( pageElements ).EditFileForm(file_id)
             })
         }
