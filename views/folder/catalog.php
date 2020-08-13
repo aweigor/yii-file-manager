@@ -11,12 +11,13 @@
     );
 
     $identity = Yii::$app->user->identity;
+    $catalogOwner = isset($this->params['catalogOwner']) ? $this->params['catalogOwner'] : $identity->user_id;
 ?>
 
 
 <?php echo $this->render("_gridFolders",
     [
-        "owner_id" => $identity->user_id,
+        "owner_id" => $catalogOwner,
         "identity" => $identity,
         "folders" => $folders,
     ])

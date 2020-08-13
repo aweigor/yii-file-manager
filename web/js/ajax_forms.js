@@ -105,6 +105,7 @@ class Form {
         this.GetForm("folder", {folder_id: folder_id})
             .then( (response) =>
             {
+                console.log(response);
                 that.ParseDOM(response)
                     .then( (result) =>
                     {

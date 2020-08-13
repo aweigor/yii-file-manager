@@ -22,18 +22,21 @@ class FolderController extends Controller
         if (empty($folder_id)) echo "no folder id provided";
 
         $folder = Folder::findOne($folder_id);
-        $folder->delete() ;
+        $folder->delete();
         return $this->redirect(["catchbin/index"]);
     }
 
     public function actionCatalog($uid = null) {
-        if (Yii::$app->user->isGuest) {
-            return $this->redirect(["auth/login"]);
-        }
+
         $this->layout = "storageLayout";
 
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(["auth/login"]);
+        } else {
+            $user = User::findOne(Yii::$app->user->id);
+        }
+
         if(!empty($uid) && $uid != Yii::$app->user->id) {
-            $user = User::findOne($uid);
             $folders = $user->getSharedFoldersByUid($uid);
         } else {
             $uid = Yii::$app->user->id;
@@ -41,7 +44,6 @@ class FolderController extends Controller
                 ->where(['fold_user_id' => $uid])
                 ->all();
         }
-
         $this->view->params['catalogOwner'] = $uid;
 
         return $this->render('catalog', [
@@ -52,12 +54,12 @@ class FolderController extends Controller
     public function actionFiles($folder_id) {
         $this->layout = "storageLayout";
 
-
         $folder = Folder::findOne($folder_id);
         $identity = Yii::$app->user->identity;
         $uploadModel = new FileUpload();
         $fileSearch = new FileSearch();
         $filesProvider = $fileSearch->search($_GET);
+        $this->view->params['catalogOwner'] = $folder->fold_user_id;
 
         return $this->render("files", [
             'folder' => $folder,
@@ -101,6 +103,7 @@ class FolderController extends Controller
             readfile($fileDir);
             exit;
         }
+
         return false;
     }
 }

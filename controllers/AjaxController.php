@@ -53,6 +53,9 @@ class AjaxController extends Controller
                 $formType = "AddFolder";
             }
             $users = ArrayHelper::map(User::find()->all(), 'user_id', 'user_name');
+            $users = array_filter($users, function ($item) {
+                return $item != Yii::$app->user->id;
+            }, ARRAY_FILTER_USE_KEY);
         }
 
         if(isset($_POST["formData"]) && !empty($_POST["formData"])) {
@@ -67,13 +70,16 @@ class AjaxController extends Controller
                 if ($folderModel->save()) {
                     if(isset($formData["users"]) && !empty($formData["users"])) {
                         $folderModel->bindUsers($formData["users"]);
+                    } elseif ($formType == "EditFolder") {
+                        $folderModel->unbindUsers();
                     }
 
                     Yii::$app->session->setFlash(
                         'success',
                         "Папка добавлена"
                     );
-                    return $this->redirect(["catchbin/index"]);
+
+                    return $this->redirect(["folder/catalog"]);
                 } else {
                     throw new BadRequestHttpException("error while saving model !");
                 }
@@ -102,7 +108,7 @@ class AjaxController extends Controller
         ] + self::HTML_RESPONSE_TEMPLATE;
 
         return json_encode([
-            "msg" => "success",
+            "msg" => $users,
             "html" => $html
         ]);
     }

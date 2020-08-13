@@ -96,4 +96,9 @@ class SiteController extends Controller
     {
         return $this->render('exchanger');
     }
+
+    public function actionTest()
+    {
+        echo var_dump($_GET);
+    }
 }

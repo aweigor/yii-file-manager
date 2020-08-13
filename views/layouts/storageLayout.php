@@ -18,7 +18,7 @@ $this->registerCssFile("@web/css/storage/layout.css",
 
 
 // Пользователи, которые дали доступ к папке
-$userId = Yii::$app->user->identity->id;
+$userId = Yii::$app->user->id;
 $catalogOwner = isset($this->params['catalogOwner']) ? $this->params['catalogOwner'] : $userId;
 $userModel = User::findOne($userId);
 $friends = $userModel->getFriends();
@@ -27,7 +27,7 @@ $navItems = [
     [
         'label' => $userModel->user_name,
         'url' => ['/folder/catalog', 'uid' => Yii::$app->user->id],
-        'active' => true
+        'active' => $catalogOwner == Yii::$app->user->id
     ]
 ];
 
@@ -36,7 +36,8 @@ foreach($friends as $friend) {
 
     $navItems[] = [
             'label' => $friend->user_name,
-            'url' => ['/folder/catalog', 'uid' => $friend->user_id]
+            'url' => ['/folder/catalog', 'uid' => $friend->user_id],
+            'active' => $catalogOwner == $friend->user_id
     ];
 }
 

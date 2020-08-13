@@ -85,7 +85,7 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                '<controller:(site|auth|catchbin)>/<id:\d+>' => '<controller>/view'
+                '<controller:(site|auth|folder)>/<id:\d+>' => '<controller>/view'
             ],
         ],
     ],

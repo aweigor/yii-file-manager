@@ -80,11 +80,33 @@ class Folder extends \yii\db\ActiveRecord
     }
 
     public function bindUsers($users) {
+        $bindedUsers = $this->getUsers()->select("user_id")->asArray()->all();
+
+        if(!empty($bindedUsers)) {
+            $this->unbindUsers($bindedUsers);
+        }
+
         if(is_array($users)) {
             foreach ($users as $user_id)
             {
                 $user = User::findOne($user_id);
                 $this->link('users', $user);
+            }
+        } else {
+            $user = User::findOne($users);
+            $this->link('users', $user);
+        }
+    }
+
+    public function unbindUsers($bindedUsers = null) {
+        $userIds = !empty($bindedUsers)
+            ? $bindedUsers
+            : $this->getUsers()->select("user_id")->asArray()->all();
+
+        if(!empty($userIds)) {
+            foreach ($userIds as $user_id) {
+                $user = User::findOne($user_id);
+                $this->unlink('users', $user);
             }
         }
     }
