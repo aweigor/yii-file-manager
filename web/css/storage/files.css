@@ -35,3 +35,13 @@
 .extension_column span {
     font-size: 16px;
 }
+.file_details_image {
+    width: 100%;
+}
+.details_container {
+    background-color:#eee;
+    margin: 0;
+}
+.details_image_preview {
+    background-color:#fff;
+}

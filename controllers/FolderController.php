@@ -13,7 +13,6 @@ use app\models\FileUpload;
 use app\models\FileSearch;
 use app\models\File;
 use yii\web\Controller;
-use yii\web\BadRequestHttpException;
 use Yii;
 
 class FolderController extends Controller
@@ -77,7 +76,6 @@ class FolderController extends Controller
             readfile($fileDir);
             exit;
         }
-
         return false;
     }
 }
