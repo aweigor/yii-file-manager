@@ -5,6 +5,7 @@ namespace app\models;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\File;
+use Yii;
 
 /**
  * FileSearch represents the model behind the search form of `app\models\File`.
@@ -41,6 +42,10 @@ class FileSearch extends File
     public function search($params)
     {
         $query = File::find()->where(['file_isDeleted' => 0]);
+
+        $query->andWhere(['or', ['and',
+            'file_user_id!='.Yii::$app->user->id, "file_isPersonal=0"],
+            'file_user_id='.Yii::$app->user->id]);
 
         $dataProvider = new ActiveDataProvider([
             'pagination' => [

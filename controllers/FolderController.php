@@ -28,6 +28,7 @@ class FolderController extends Controller
     public function actionFiles($folder_id) {
         $this->layout = "storageLayout";
 
+
         $folder = Folder::findOne($folder_id);
         $identity = Yii::$app->user->identity;
         $uploadModel = new FileUpload();

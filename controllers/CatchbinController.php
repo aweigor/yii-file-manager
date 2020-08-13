@@ -28,6 +28,8 @@ class CatchbinController extends Controller
             ->where(['fold_user_id' => Yii::$app->user->identity->user_id])
             ->all();
 
+
+
         return $this->render('index', [
             "ownFolders" => $ownFolders
         ]);
