@@ -19,14 +19,15 @@ $this->registerCssFile("@web/css/storage/layout.css",
 
 // Пользователи, которые дали доступ к папке
 $userId = Yii::$app->user->identity->id;
+$catalogOwner = isset($this->params['catalogOwner']) ? $this->params['catalogOwner'] : $userId;
 $userModel = User::findOne($userId);
 $friends = $userModel->getFriends();
-
 
 $navItems = [
     [
         'label' => $userModel->user_name,
-        'url' => ['/catchbin/folder', ['uid' => $userModel->user_id]]
+        'url' => ['/folder/catalog', 'uid' => Yii::$app->user->id],
+        'active' => true
     ]
 ];
 
@@ -35,7 +36,7 @@ foreach($friends as $friend) {
 
     $navItems[] = [
             'label' => $friend->user_name,
-            'url' => ['/catchbin/folder', ['uid' => $friend->user_id]]
+            'url' => ['/folder/catalog', 'uid' => $friend->user_id]
     ];
 }
 
@@ -62,11 +63,11 @@ foreach($friends as $friend) {
                 <?php
                 NavBar::begin([
                     'options' => [
-                        'class' => 'navbar navbar-expand-lg navbar-light bg-light',
+                        'class' => 'sidebar navbar navbar-expand-lg navbar-light bg-light',
                     ]
                 ]);
                 echo Nav::widget([
-                    'options' => ['class' => 'nav flex-column'],
+                    'options' => ['class' => 'sidebar nav flex-column'],
                     'items' => $navItems,
                 ]);
                 NavBar::end();

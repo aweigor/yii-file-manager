@@ -12,6 +12,7 @@ use app\models\Folder;
 use app\models\FileUpload;
 use app\models\FileSearch;
 use app\models\File;
+use app\models\User;
 use yii\web\Controller;
 use Yii;
 
@@ -23,6 +24,29 @@ class FolderController extends Controller
         $folder = Folder::findOne($folder_id);
         $folder->delete() ;
         return $this->redirect(["catchbin/index"]);
+    }
+
+    public function actionCatalog($uid = null) {
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(["auth/login"]);
+        }
+        $this->layout = "storageLayout";
+
+        if(!empty($uid) && $uid != Yii::$app->user->id) {
+            $user = User::findOne($uid);
+            $folders = $user->getSharedFoldersByUid($uid);
+        } else {
+            $uid = Yii::$app->user->id;
+            $folders = Folder::find()
+                ->where(['fold_user_id' => $uid])
+                ->all();
+        }
+
+        $this->view->params['catalogOwner'] = $uid;
+
+        return $this->render('catalog', [
+            "folders" => $folders
+        ]);
     }
 
     public function actionFiles($folder_id) {

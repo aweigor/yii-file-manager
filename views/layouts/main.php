@@ -40,7 +40,7 @@ AppAsset::register($this);
         'options' => ['class' => 'navbar-collapse collapse w-100 order-3 dual-collapse2 justify-content-end navbar-items-container'],
         'items' => [
             ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'File Exchanger', 'url' => ['/catchbin/index']],
+            ['label' => 'File Exchanger', 'url' => ['/folder/catalog']],
             Yii::$app->user->isGuest ? (
                 ['label' => 'Login', 'url' => ['/auth/login']]
             ) : (

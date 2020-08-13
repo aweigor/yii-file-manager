@@ -160,4 +160,13 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             return self::findOne($userId);
         },array_unique($sharedOwners));
     }
+
+    public function getSharedFoldersByUid($uid) {
+        $sharedFolders = $this->getSharedFolders()
+            ->select("*")
+            ->where(["fold_user_id" => $uid])
+            ->all();
+
+        return $sharedFolders;
+    }
 }
