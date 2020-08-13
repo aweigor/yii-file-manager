@@ -30,6 +30,9 @@ $this->registerCssFile("@web/css/storage/files.css",
         'depends'=> ['app\assets\AppAsset']
     ]
 );
+
+$actionButtons =
+
 $gridColumns = [
     [
         'class' => 'kartik\grid\ExpandRowColumn',
@@ -84,7 +87,8 @@ $gridColumns = [
         'template' => '{bt_download_file}{bt_edit_file}{bt_delete_file}',
         'contentOptions' => ['class' => 'action_button_group'],
         'buttons' => [
-            'bt_edit_file' => function ($url, $model, $key) {
+            'bt_edit_file' => function ($url, $model, $key) use($folder) {
+                if($model->file_user_id !== Yii::$app->user->id && $folder->fold_user_id !== Yii::$app->user->id) return '<a href="#" class="restricted_link"></a>';
                 return '<div 
                         type="button"
                         id="file_'.$model->file_id.'" 
@@ -94,7 +98,8 @@ $gridColumns = [
                         class="btn bt-edit-file files_bu-edit"
                         ><i class="fas fa-pencil-alt"></i></div>';
             },
-            'bt_delete_file' => function ($url, $model, $key) {
+            'bt_delete_file' => function ($url, $model, $key) use($folder) {
+                if($model->file_user_id !== Yii::$app->user->id && $folder->fold_user_id !== Yii::$app->user->id) return '<a href="#" class="restricted_link"></a>';
                 return '<div type="button " class="btn"><a href="'.Url::to(['folder/remove-file', 'file_id' => $model->file_id]).'">
                             <i style="color:red" class="fas fa-minus-square"></i>
                         </a></div>';

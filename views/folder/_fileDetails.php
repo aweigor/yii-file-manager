@@ -35,11 +35,11 @@ if(!in_array($model->file_ext, $imageExts)) {
     </div>
     <div class="details_file_info col-8">
         <ul>
-            <li>Имя файла:<?=$model->file_name?></li>
-            <li>Тип файла:<?=$model->file_ext?></li>
-            <li>Комментарий:<?=$model->file_comment?></li>
-            <li>Дата загрузки:<?=$model->file_dateloaded?></li>
-            <li>Владелец:<?=$model->user->user_name?></li>
+            <li><strong>Имя файла:</strong><?=$model->file_name?></li>
+            <li><strong>Тип файла:</strong><?=$model->file_ext?></li>
+            <li><strong>Комментарий:</strong><?=$model->file_comment?></li>
+            <li><strong>Дата загрузки:</strong><?=$model->file_dateloaded?></li>
+            <li><strong>Владелец:</strong><?=$model->user->user_name?></li>
         </ul>
     </div>
 </div>
