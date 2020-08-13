@@ -23,7 +23,7 @@ class FolderController extends Controller
 
         $folder = Folder::findOne($folder_id);
         $folder->delete();
-        return $this->redirect(["catchbin/index"]);
+        return $this->redirect(["folder/catalog"]);
     }
 
     public function actionCatalog($uid = null) {
@@ -58,7 +58,9 @@ class FolderController extends Controller
         $identity = Yii::$app->user->identity;
         $uploadModel = new FileUpload();
         $fileSearch = new FileSearch();
-        $filesProvider = $fileSearch->search($_GET);
+        $params = $_GET;
+        $params["folder_id"] = $folder_id;
+        $filesProvider = $fileSearch->search($params);
         $this->view->params['catalogOwner'] = $folder->fold_user_id;
 
         return $this->render("files", [

@@ -42,6 +42,16 @@ class LoginForm extends Model
      * @param string $attribute the attribute currently being validated
      * @param array $params the additional name-value pairs given in the rule
      */
+
+    public function attributeLabels()
+    {
+        return [
+            'password' => 'Пароль',
+            'username' => 'Имя',
+            'rememberMe' => 'Запомнить меня'
+        ];
+    }
+
     public function validatePassword($attribute, $params)
     {
         if (!$this->hasErrors()) {

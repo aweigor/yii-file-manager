@@ -95,17 +95,17 @@ $gridColumns = [
                         owner="'.$model->file_user_id.'" 
                         data-toggle="modal" 
                         data-target="#editModal" 
-                        class="btn bt-edit-file files_bu-edit"
+                        class="btn btn-files bt-edit-file files_bu-edit"
                         ><i class="fas fa-pencil-alt"></i></div>';
             },
             'bt_delete_file' => function ($url, $model, $key) use($folder) {
                 if($model->file_user_id !== Yii::$app->user->id && $folder->fold_user_id !== Yii::$app->user->id) return '<a href="#" class="restricted_link"></a>';
-                return '<div type="button " class="btn"><a href="'.Url::to(['folder/remove-file', 'file_id' => $model->file_id]).'">
+                return '<div type="button " class="btn btn-files"><a href="'.Url::to(['folder/remove-file', 'file_id' => $model->file_id]).'">
                             <i style="color:red" class="fas fa-minus-square"></i>
                         </a></div>';
             },
             'bt_download_file' => function ($url, $model, $key) {
-                return '<div type="button " class="btn"><a href="'.Url::to(['folder/download-file', 'file_id' => $model->file_id]).'">
+                return '<div type="button " class="btn btn-files"><a href="'.Url::to(['folder/download-file', 'file_id' => $model->file_id]).'">
                             <i class="fas fa-angle-double-down"></i>
                         </a></div>';
             },

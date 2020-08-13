@@ -10,6 +10,13 @@ use yii\bootstrap4\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 
+$this->registerCssFile("@web/css/storage/layout.css",
+    [
+        'rel' => 'stylesheet',
+        'depends'=> ['app\assets\AppAsset']
+    ]
+);
+
 AppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
@@ -30,25 +37,26 @@ AppAsset::register($this);
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => Yii::$app->name,
+        'brandLabel' => '<img src="/images/logo.png" class="img-responsive"/>',
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
-            'class' => 'navbar-expand-lg navbar-light bg-light navbar-container',
+            'class' => 'navbar-expand-lg navbar-light bg-light navbar navbar-container',
+            'style' => 'background-color: #e3f2fd'
         ],
     ]);
     echo Nav::widget([
-        'options' => ['class' => 'navbar-collapse collapse w-100 order-3 dual-collapse2 justify-content-end navbar-items-container'],
+        'options' => ['class' => 'navbar-collapse collapse w-100 order-3 dual-collapse2 justify-content-end navbar-items-container nav-pills'],
         'items' => [
-            ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'File Exchanger', 'url' => ['/folder/catalog']],
+            ['label' => 'Справка', 'url' => ['/site/index']],
+            ['label' => 'Файлы', 'url' => ['/folder/catalog'], 'active' => in_array($this->context->action->id, ['files','catalog'])],
             Yii::$app->user->isGuest ? (
-                ['label' => 'Login', 'url' => ['/auth/login']]
+                ['label' => 'Авторизация', 'url' => ['/auth/login']]
             ) : (
-                '<li>'
+                '<li class="nav-item">'
                 . Html::beginForm(['/auth/logout'], 'post')
                 . Html::submitButton(
-                    'Logout (' . Yii::$app->user->identity->user_name . ')',
-                    ['class' => 'btn btn-link logout']
+                    'Выйти (' . Yii::$app->user->identity->user_name . ')',
+                    ['class' => 'btn btn-link nav-link logout']
                 )
                 . Html::endForm()
                 . '</li>'

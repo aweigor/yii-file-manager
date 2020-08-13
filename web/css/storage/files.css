@@ -10,12 +10,12 @@
     padding: 0;
     width:100%;
 }
-.btn > a {
+.btn-files > a {
     display: block;
     width:100%;
     height:100%;
 }
-.btn {
+.btn-files {
     padding:7px;
     border: 1px solid rgba(0,0,0,0.3);
     margin: 0 5px;

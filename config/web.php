@@ -5,9 +5,9 @@ $db = require __DIR__ . '/db.php';
 
 $config = [
     'id' => 'basic',
+    'name'=>'Комплит Файлы',
     'language' => 'ru-RU',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log'],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
@@ -61,6 +61,11 @@ $config = [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,
         ],
+        'session' => [
+            'class' => 'yii\web\Session',
+            'timeout' => 60*60*24*14,
+        ],
+
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
@@ -90,6 +95,18 @@ $config = [
         ],
     ],
     'params' => $params,
+    'bootstrap' => [
+        'session',
+        'session',
+        'yii\web\Session',
+        [
+            'class' => 'yii\web\Session',
+            'timeout' => 60*60*24*14,
+        ],
+        function () {
+            return new yii\web\Session();
+        }
+    ],
 ];
 
 if (YII_ENV_DEV) {

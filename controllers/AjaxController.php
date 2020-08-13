@@ -63,9 +63,17 @@ class AjaxController extends Controller
                 $formData = json_decode($_POST["formData"], true);
                 $formData = Ajax::ParseFormData($formData, "Folder");
 
-                $folderModel->fold_user_id = $formData["fold_user_id"];
-                $folderModel->fold_name = $formData["fold_name"];
-                $folderModel->fold_desc = $formData["fold_desc"];
+                if(isset($formData["fold_user_id"]) && !empty($formData["fold_user_id"])) {
+                    $folderModel->fold_user_id = $formData["fold_user_id"];
+                }
+
+                if(isset($formData["fold_name"]) && !empty($formData["fold_name"])) {
+                    $folderModel->fold_name = $formData["fold_name"];
+                }
+
+                if(isset($formData["fold_desc"]) && !empty($formData["fold_desc"])) {
+                    $folderModel->fold_desc = $formData["fold_desc"];
+                }
 
                 if ($folderModel->save()) {
                     if(isset($formData["users"]) && !empty($formData["users"])) {
@@ -183,17 +191,17 @@ class AjaxController extends Controller
                 $formData = json_decode($_POST["formData"], true);
                 $formData = Ajax::ParseFormData($formData, "File");
 
-                if(!empty($formData["file_name"])) {
+                if(isset($formData["file_name"]) && !empty($formData["file_name"])) {
                     $fileModel->file_name = $formData["file_name"];
                 }
 
-                if(!empty($formData["file_isPersonal"])) {
+                if(isset($formData["file_isPersonal"]) &&  !empty($formData["file_isPersonal"])) {
                     $fileModel->file_isPersonal = $formData["file_isPersonal"];
                 } else {
                     $fileModel->file_isPersonal = false;
                 }
 
-                if(!empty($formData["file_comment"])) {
+                if(isset($formData["file_comment"]) && !empty($formData["file_comment"])) {
                     $fileModel->file_comment = $formData["file_comment"];
                 }
 

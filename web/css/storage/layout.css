@@ -83,8 +83,16 @@ ul.nav.sidebar > li > a {
     padding: 23px;
     width: 100%;
     height: 100%;
-    color: #292b2c ;
 }
+ul.nav > li > a, .nav-link {
+    color: #292b2c;
+}
+
+.main-nav-item > a.active {
+    color: #fff;
+}
+
+
 ul.nav.sidebar > li > a.active {
     background: #eee;
 }
@@ -94,4 +102,8 @@ ul.nav.sidebar > li > a.active {
 }
 .sidebar.navbar > .container {
     padding:0;
+}
+
+li.nav-item > form {
+    margin:0;
 }

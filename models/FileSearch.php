@@ -43,6 +43,8 @@ class FileSearch extends File
     {
         $query = File::find()->where(['file_isDeleted' => 0]);
 
+        $query->andWhere(['file_fold_id' => $params["folder_id"]]);
+
         $query->andWhere(['or', ['and',
             'file_user_id!='.Yii::$app->user->id, "file_isPersonal=0"],
             'file_user_id='.Yii::$app->user->id]);
