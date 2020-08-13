@@ -22,7 +22,9 @@ $this->registerCssFile("@web/css/storage/grid-folders.css",
 
 <div class="folders_container">
     <?php if($identity->user_id === $owner_id) : ?>
-        <div type="button " id="bt-add-folder" owner="<?= $owner_id?>" data-toggle="modal" data-target="#editModal" class="btn folders_bu-add folders_item folder"></div>
+        <div type="button " id="bt-add-folder" owner="<?= $owner_id?>" data-toggle="modal" data-target="#editModal" class="btn folders_bu-add folders_item">
+            <i class="fas fa-plus"></i>
+        </div>
     <?php endif;?>
 
     <?php foreach($folders as $folder): ?>
@@ -38,6 +40,10 @@ $this->registerCssFile("@web/css/storage/grid-folders.css",
                     onmouseout="editGroupMouseOut(event)"
                     onclick="folderClickEvent('<?php echo $enterFolderLink?>')"
             >
+            </div>
+
+            <div class="textarea" align="center">
+                <span class="folder-caption"><?= $folder->fold_name?></span>
             </div>
 
             <?php if($identity->user_id === $folder->fold_user_id): ?>

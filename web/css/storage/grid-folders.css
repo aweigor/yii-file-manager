@@ -1,15 +1,21 @@
 .folders_container {
     width: 100%;
     height: 100%;
-
+    background-color: #f8f9fa;
+    padding: 20px;
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 3px;
 }
 .folders_bu-add {
-    background: #eee;
+    background: #dfe0e1;
 }
 .folders_item {
     width: 150px;
     height: 150px;
     position: relative;
+    margin: 5px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.5);
     padding: 0;
 }
 .folder_toggle_wrap {
@@ -22,7 +28,7 @@
 //    background: rgba(0,0,0,0.3);
 }
 .folder_toggle_wrap.hovered {
-    background: rgba(0,0,0,0.3);
+//    background: rgba(0,0,0,0.1);
 }
 
 .edit_bt_group {
@@ -38,7 +44,6 @@
     background: #fff;
     text-align: center;
     margin: 4px;
-
 }
 
 .edit_bt_group div > a {
@@ -46,7 +51,7 @@
     cursor: default;
     width: 100%;
     height: 100%;
-    font-size: 24px;
+    font-size: 30px;
     line-height: 30px;
     margin: auto;
     text-align: center;
@@ -58,4 +63,25 @@
     position: absolute;
     width: 100%;
     height: 100%;
+}
+
+#bt-add-folder {
+    padding: 40px;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 70px;
+    line-height: 100px;
+    color: #aaa;
+}
+.folder {
+    background: url('/images/folder.png');
+    background-repeat: no-repeat;
+    background-position: 38px 38px;
+    background-size: 70px;
+    vertical-align: bottom;
+}
+.folder > .textarea {
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
 }

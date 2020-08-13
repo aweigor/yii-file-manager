@@ -62,3 +62,10 @@
     border-bottom-color: #EEEEEE;
     background-color: #FAFAFA;
 }
+.storage_sided_bar {
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 3px;
+    background:#f8f9fa;
+    padding-top: 20px;
+    box-shadow: 10px 0 6px -6px rgba(0,0,0,0.5);
+}
