@@ -10,6 +10,7 @@ use yii\grid\ActionColumn;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use kartik\grid\GridView;
+use app\components\FilesGallery;
 
 /*
  * @var $filesProvider
@@ -66,7 +67,16 @@ $gridColumns = [
         'attribute' => 'file_name',
         'vAlign' => 'middle',
         'width' => '50%',
-        'format' => 'raw'
+        'format' => 'raw',
+        'value' => function ($model) {
+            return Html::a($model->file_name,
+                ''.$model->file_id,
+                ['data-toggle' => 'modal',
+                    'data-target' => '#galleryModal',
+                    'onclick' => 'imageSelectedEvent(event,'.$model->file_id.')',
+                    'style' => 'text-decoration:none; color: #111;height:100%;display:block'
+                    ]);
+        },
     ],
     [
         'attribute' => 'file_dateloaded',
@@ -79,6 +89,7 @@ $gridColumns = [
 #        'attribute' => 'file_isPersonal',
 #        'vAlign' => 'middle'
 #    ],
+
     [
         'class' => 'kartik\grid\ActionColumn',
         'width' => '20%',
@@ -183,3 +194,4 @@ $gridColumns = [
     </div><!-- modal-dialog -->
 </div><!-- modal -->
 
+<?= FilesGallery::widget(['files' => $folder->userFiles])?>

@@ -67,6 +67,18 @@ class Folder extends \yii\db\ActiveRecord
     {
         return $this->hasMany(File::className(), ['file_fold_id' => 'fold_id']);
     }
+    public function getUserFiles() {
+        $uid = Yii::$app->user->id;
+        $userFiles = $this->getFiles()
+            ->select("*")
+            ->andWhere(['or',['and',
+                'file_isPersonal' => true, 'file_user_id' => $uid],
+                ['file_isPersonal' => false]])
+            ->andWhere(['file_isDeleted' => false])
+            ->asArray()
+            ->all();
+        return $userFiles;
+    }
 
     public function getUsers()
     {
