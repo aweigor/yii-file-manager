@@ -25,7 +25,7 @@ use yii\helpers\Url;
         'pluginOptions' => [
             'initialPreviewAsData'=>true,
             'overwriteInitial'=>false,
-            'maxFileSize'=> 2800,
+            'maxFileSize'=> 10000,
             'browseClass' => 'btn btn-success',
             'uploadClass' => 'btn btn-info',
             'removeClass' => 'btn btn-danger',

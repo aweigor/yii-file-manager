@@ -31,13 +31,17 @@ $this->registerCssFile("@web/css/storage/gallery.css",
 <div class="modal galery-modal fade" id="galleryModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="galery-modal-dialog modal-dialog" role="document">
         <div class="galery-modal-content modal-content">
-            <!--div class="galery-modal-body modal-header" style="height:60px;background: black; padding:0;border:none">
-            </div-->
+            <div class="galery-modal-body modal-header" style="height:60px;background: black; padding:0;border:none">
+            </div>
             <div class="galery-modal-body modal-body">
                 <div class="galery-image-group">
                     <?php foreach($files as $key => $file): ?>
                         <?php if(file_exists(Url::base().$file["file_dir"])):?>
-                            <img id="<?=$file["file_id"]?>" src="/<?= $file["file_dir"]?>" class="galery-image <?= $key ? "" : "active" ?>">
+                            <?php if(in_array($file["file_ext"],['png','jpg','jpeg'])):?>
+                                <img id="<?=$file["file_id"]?>" src="/<?= $file["file_dir"]?>" class="galery-image <?= $key ? "" : "active" ?>">
+                            <?php else: ?>
+                                <img id="<?=$file["file_id"]?>" src="/images/folder.png" class="galery-image <?= $key ? "" : "active" ?>">
+                            <?php endif;?>
                             <div class="gallery-popover collapsed" id="pp_<?=$file["file_id"]?>">
                                 <p align="right"><span><i class="fas fa-times"></i></span></p>
                                 <div class="toggle-area" style="position: absolute; right:0; top:0; width: 30px;height: 30px; background: transparent" onclick="closePopover(event)"></div>
