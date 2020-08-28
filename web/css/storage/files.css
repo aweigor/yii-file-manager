@@ -28,12 +28,16 @@
     font-size: 16px;
 }
 .action_button_group {}
-.extension_column {
+.extension_column > div > span {
     text-align: center;
-    font-size: 32px;
+    font-size: 28px;
+    color: #777;
 }
-.extension_column span {
-    font-size: 16px;
+.extension_column > div {
+    display: flex;
+    width:100%;
+    align-items: center;
+    padding: 0 15px;
 }
 .file_details_image {
     width: 100%;

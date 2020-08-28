@@ -57,12 +57,12 @@ $this->registerCssFile("@web/css/storage/grid-folders.css",
                             data-target="#editModal"
                     >
                         <a href="#">
-                            <i  class="fas fa-pen-square"></i>
+                            <span><i class="fas fa-pencil-alt"></i></span>
                         </a>
                     </div>
                     <div>
                         <a href="<?= $removeFolderLink?>">
-                            <i style="color:red" class="fas fa-minus-square"></i>
+                            <span><i  class="fas fa-trash"></i></span>
                         </a>
                     </div>
                 </div>

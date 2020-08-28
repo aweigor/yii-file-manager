@@ -83,17 +83,21 @@ function changeSlideClickEvent (event, direction) {
 }
 
 function updateLinks(id) {
-    let downloadLink, removeLink;
+    let downloadLink, removeLink, infoId;
 
     downloadLink = "/folder/download-file?file_id="+id;
     removeLink = "/folder/remove-file?file_id="+id;
+    infoId = "ppbt_"+id;
 
-    const removeButtonElement = document.getElementById("gallery-remove");
-    const downloadButtonElement = document.getElementById("gallery-download");
-    console.log(id)
+    let removeButtonElement = document.getElementById("gallery-remove");
+    let downloadButtonElement = document.getElementById("gallery-download");
+    let infoButtonElement =  $( ".gallery-info" ).first();
+    console.log("infoButtonElement",infoButtonElement)
+
 
     removeButtonElement.href = removeLink;
     downloadButtonElement.href = downloadLink;
+    infoButtonElement.attr("id",infoId)
 }
 
 function imageSelectedEvent(e, image_id) {
@@ -108,4 +112,13 @@ function imageSelectedEvent(e, image_id) {
             item.classList.remove('active')
         }
     })
+}
+
+function showPopover(e) {
+    let fileId = e.target.id.split('_')[1];
+    let popoverElement = document.getElementById("pp_"+fileId);
+    $(popoverElement).toggleClass('collapsed');
+}
+function closePopover(e) {
+    $(e.target).parent().addClass('collapsed')
 }

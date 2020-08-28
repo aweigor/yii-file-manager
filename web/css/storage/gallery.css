@@ -43,6 +43,7 @@
 }
 .galery-modal-body {
     opacity:1;
+    padding:0;
 }
 .galery-image-group {
     position:fixed;
@@ -92,4 +93,25 @@
 }
 .gallery-slide-button.previous {
     left: 20px;
+}
+.gallery-popover {
+    background: #fff;
+    top:70px;
+    right:20px;
+    width:300px;
+    height: 150px;
+    position: fixed;
+    display: block;
+    padding: 10px;
+}
+.gallery-popover.collapsed {
+    display: none;
+}
+.gallery-popover > ul {
+    list-style: none;
+    font-size: 14px;
+    padding:0 10px;
+}
+.galery-modal-button-group {
+    height: 50px;
 }

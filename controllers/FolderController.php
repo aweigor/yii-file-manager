@@ -90,7 +90,7 @@ class FolderController extends Controller
         } else {
             $fileDir = 'uploads/storage/'
                 .$file->file_fold_id . '/'
-                .md5($file->file_dateloaded) . '.'
+                .md5($file->file_dateloaded.$file->file_name) . '.'
                 .$file->file_ext;
         }
 

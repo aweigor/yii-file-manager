@@ -35,30 +35,30 @@ $this->registerCssFile("@web/css/storage/files.css",
 $actionButtons =
 
 $gridColumns = [
-    [
-        'class' => 'kartik\grid\ExpandRowColumn',
-        'width' => '5%',
-        'value' => function ($model, $key, $index, $column) {
-            return GridView::ROW_COLLAPSED;
-        },
-        // uncomment below and comment detail if you need to render via ajax
-        // 'detailUrl' => Url::to(['/site/book-details']),
-        'detail' => function ($model, $key, $index, $column) {
-            return Yii::$app->controller->renderPartial('_fileDetails', ['model' => $model]);
-        },
-        'headerOptions' => ['class' => 'kartik-sheet-style'],
-        'expandOneOnly' => true
-    ],
+#    [
+#        'class' => 'kartik\grid\ExpandRowColumn',
+#        'width' => '5%',
+#        'value' => function ($model, $key, $index, $column) {
+#            return GridView::ROW_COLLAPSED;
+#        },
+#        // uncomment below and comment detail if you need to render via ajax
+#        // 'detailUrl' => Url::to(['/site/book-details']),
+#        'detail' => function ($model, $key, $index, $column) {
+#            return Yii::$app->controller->renderPartial('_fileDetails', ['model' => $model]);
+#        },
+#        'headerOptions' => ['class' => 'kartik-sheet-style'],
+#        'expandOneOnly' => true
+#    ],
     [
         'attribute' => 'file_ext',
         'vAlign' => 'middle',
-        'width' => '5%',
-        'contentOptions' => ['class' => 'extension_column'],
+        'width' => '10%',
+        'contentOptions' => ['class' => 'extension_column','style' => 'padding:0px'],
         'value' => function ($model) {
             $formatIcon = isset(Yii::$app->params["format_icons"][$model->file_ext])
                 ? Yii::$app->params["format_icons"][$model->file_ext]
                 : '<i class="fas fa-file"></i>';
-            $html = $formatIcon . '<span>'.$model->file_ext.'</span>';
+            $html = '<div><span style="padding-right:10px">'.$formatIcon .' </span>'. '<span style="display: block;font-size:16px; color:#292b2c">'.$model->file_ext.'</span></div>';
             return $html;
         },
         'format' => 'html'
@@ -68,15 +68,6 @@ $gridColumns = [
         'vAlign' => 'middle',
         'width' => '50%',
         'format' => 'raw',
-        'value' => function ($model) {
-            return Html::a($model->file_name,
-                ''.$model->file_id,
-                ['data-toggle' => 'modal',
-                    'data-target' => '#galleryModal',
-                    'onclick' => 'imageSelectedEvent(event,'.$model->file_id.')',
-                    'style' => 'text-decoration:none; color: #111;height:100%;display:block'
-                    ]);
-        },
     ],
     [
         'attribute' => 'file_dateloaded',
@@ -107,12 +98,13 @@ $gridColumns = [
                         data-toggle="modal" 
                         data-target="#editModal" 
                         class="btn btn-files bt-edit-file files_bu-edit"
-                        ><i class="fas fa-pencil-alt"></i></div>';
+                        
+                        ><i style="color: #0275d8" class="fas fa-pencil-alt"></i></div>';
             },
             'bt_delete_file' => function ($url, $model, $key) use($folder) {
                 if($model->file_user_id !== Yii::$app->user->id && $folder->fold_user_id !== Yii::$app->user->id) return '<a href="#" class="restricted_link"></a>';
                 return '<div type="button " class="btn btn-files"><a href="'.Url::to(['folder/remove-file', 'file_id' => $model->file_id]).'">
-                            <i style="color:red" class="fas fa-minus-square"></i>
+                            <i class="fas fa-trash"></i>
                         </a></div>';
             },
             'bt_download_file' => function ($url, $model, $key) {
@@ -139,6 +131,13 @@ $gridColumns = [
         'toolbar' =>  [
             [
                 'content' =>
+                    Html::button('<span><i class="fas fa-binoculars"></i></span>', [
+                        'class' => 'btn btn-success',
+                        'title' => "Галрея",
+                        'id' => "bt-open-gallery",
+                        'data-toggle' => 'modal',
+                        'data-target' => '#galleryModal'
+                    ]).
                     Html::button('<i class="fas fa-download"></i>&nbsp&nbsp<span>Загрузить файл</span>', [
                         'class' => 'btn btn-success',
                         'title' => "Загрузить файл",
@@ -155,7 +154,14 @@ $gridColumns = [
             'before' => '', //IMPORTANT
         ],
         'resizableColumns' => false,
-        'persistResize' => false
+        'persistResize' => false,
+        'rowOptions'   => function ($model) {
+            return [
+                'data-id' => $model->file_id,
+                'onclick' => 'imageSelectedEvent(event,'.$model->file_id.')',
+                'style' => 'cursor: pointer'
+            ];
+        }
     ]) ?>
 </div>
 
@@ -195,3 +201,16 @@ $gridColumns = [
 </div><!-- modal -->
 
 <?= FilesGallery::widget(['files' => $folder->userFiles])?>
+
+<?php
+$this->registerJs("
+    
+    $('td').click(function (e) {
+        var id = $(this).closest('tr').data('id');
+        if(e.target == this)
+            $('#galleryModal').modal('show');
+    });
+
+");
+?>
+

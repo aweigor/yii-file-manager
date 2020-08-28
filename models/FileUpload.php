@@ -16,7 +16,7 @@ class FileUpload extends File
     public function rules()
     {
         return [
-            ['fileInstances', 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg', 'maxFiles' => 4],
+            ['fileInstances', 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg, ppt, pptx, xls, jpeg, mov, pdf, docx, doc, txt, mp4, zip, rar', 'maxFiles' => 5],
         ];
     }
 
@@ -38,7 +38,7 @@ class FileUpload extends File
     {
         $uploadDir = 'uploads/storage/'.$folder->fold_id;
         if(!is_dir($uploadDir)) mkdir($uploadDir);
-        $fileDir = $uploadDir . '/' . md5($time) . '.' . $file->extension;
+        $fileDir = $uploadDir . '/' . md5($time.$file->baseName) . '.' . $file->extension;
 
         if($file->saveAs($fileDir)) {
             return $fileDir;
