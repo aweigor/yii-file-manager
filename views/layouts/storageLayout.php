@@ -50,7 +50,7 @@ foreach($friends as $friend) {
 <?php $this->endContent(); ?>
 
 <?php $this->beginContent('@views/layouts/main.php'); ?>
-    <div class="storage_container container">
+    <div class="storage_container container-fluid">
 
         <!--div class="storage_header row">
             Поиск

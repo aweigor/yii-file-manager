@@ -125,7 +125,7 @@ $gridColumns = [
         'dataProvider'=> $filesProvider,
         'filterModel' => $searchModel,
         'columns' => $gridColumns,
-        'containerOptions' => ['style' => 'height: calc(100vh - 400px);overflow: auto'], // only set when $responsive = false
+        'containerOptions' => ['style' => 'height: calc(100vh - 300px);overflow: auto'], // only set when $responsive = false
         'headerRowOptions' => ['class' => 'kartik-sheet-style'],
         'filterRowOptions' => ['class' => 'kartik-sheet-style'],
         'toolbar' =>  [
@@ -151,7 +151,8 @@ $gridColumns = [
         ],
         'panel' => [
             'heading' => $folder->fold_name,
-            'before' => '', //IMPORTANT
+            'before' => '', //IMPORTANT,
+            'footer' => false
         ],
         'resizableColumns' => false,
         'persistResize' => false,

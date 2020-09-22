@@ -34,4 +34,4 @@ use yii\helpers\Url;
     ]
 )->label(false); ?>
 
-<?php ActiveForm::end() ?>
+<?php ActiveForm::end() ?>   
