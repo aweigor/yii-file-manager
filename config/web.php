@@ -91,6 +91,7 @@ $config = [
             'showScriptName' => false,
             'rules' => [
                 '<controller:(site|auth|folder)>/<id:\d+>' => '<controller>/view'
+
             ],
         ],
     ],

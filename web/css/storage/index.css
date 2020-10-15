@@ -12,3 +12,11 @@
 .folders_container {
 
 }
+.rightimg {
+    display: flex;
+    justify-content: flex-end;
+}
+.instructions, .instructions > p {
+    width: 100%;
+    padding: 20px;
+}

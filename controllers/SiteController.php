@@ -60,14 +60,19 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(["auth/login"]);
+        } else {
+            return $this->render('index');
+        }
+
     }
 
     /**
      * Displays contact page.
      *
      * @return Response|string
-     */
+     *
     public function actionContact()
     {
         $model = new ContactForm();
@@ -79,13 +84,13 @@ class SiteController extends Controller
         return $this->render('contact', [
             'model' => $model,
         ]);
-    }
+    }*/
 
     /**
      * Displays about page.
      *
      * @return string
-     */
+     *
     public function actionAbout()
     {
         return $this->render('about');
@@ -100,5 +105,5 @@ class SiteController extends Controller
     public function actionTest()
     {
         echo var_dump($_GET);
-    }
+    }*/
 }
